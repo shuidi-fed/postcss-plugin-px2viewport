@@ -1,0 +1,48 @@
+{
+  "name": "postcss-plugin-px2viewport",
+  "version": "0.0.1",
+  "description": "A CSS post-processor that converts px to viewport units or/and rem.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shuidi-fed/postcss-plugin-px2viewport.git"
+  },
+  "keywords": [
+    "css",
+    "units",
+    "pixel",
+    "px",
+    "viewport",
+    "vw",
+    "vh",
+    "vmin",
+    "vmax",
+    "rem",
+    "postcss",
+    "postcss-plugin"
+  ],
+  "bugs": {
+    "url": "https://github.com/shuidi-fed/postcss-plugin-px2viewport/issues"
+  },
+  "author": "vhtml (https://github.com/vhtml)",
+  "license": "MIT",
+  "engines": {
+    "node": ">=7.6.0"
+  },
+  "homepage": "https://github.com/shuidi-fed/postcss-plugin-px2viewport#readme",
+  "dependencies": {
+    "object-assign": "^4.0.1",
+    "postcss": "^5.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^4.18.2",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1"
+  }
+}

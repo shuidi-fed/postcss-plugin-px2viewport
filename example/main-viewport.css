@@ -1,0 +1,38 @@
+.class {
+  margin: -0.13333rem .5vh;
+  margin: -1.33333vw .5vh;
+  padding: 5vmin 0.12667rem 1px;
+  padding: 5vmin 1.26667vw 1px;
+  border: 0.04rem solid black;
+  border: 0.4vw solid black;
+  border-bottom-width: 1px;
+  border-bottom-width: 1px;
+  font-size: 0.18667rem;
+  font-size: 1.86667vw;
+  line-height: 0.26667rem;
+  line-height: 2.66667vw;
+}
+.class2 {
+  border: 1px solid black;
+  border: 1px solid black;
+  margin-bottom: 1px;
+  margin-bottom: 1px;
+  font-size: 0.26667rem;
+  font-size: 2.66667vw;
+  line-height: 0.4rem;
+  line-height: 4vw;
+}
+@media (min-width: 750px) {
+  .class3 {
+    font-size: 0.21333rem;
+    font-size: 2.13333vw;
+    line-height: 0.29333rem;
+    line-height: 2.93333vw;
+  }
+}
+
+/*
+.class {
+  font-size: 16px;
+}
+*/
