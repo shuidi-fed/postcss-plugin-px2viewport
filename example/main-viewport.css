@@ -29,14 +29,18 @@
     line-height: 0.29333rem;
     line-height: 2.93333vw;
   }
-  .hairlines .class3 {border: 0.5px solid 0.13333rem;border: 0.5px solid 1.33333vw;
+  .hairlines .class3 {
+    border: 0.5px solid 0.13333rem;
+    border: 0.5px solid 1.33333vw;
   }
 }
 .class4 {
   border-top: 1px solid black;
   border-bottom: 1px solid black;
 }
-.hairlines .class4 {border-top: 0.5px solid black;border-bottom: 0.5px solid black;
+.hairlines .class4 {
+  border-top: 0.5px solid black;
+  border-bottom: 0.5px solid black;
 }
 
 /*
