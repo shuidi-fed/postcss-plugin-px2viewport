@@ -8,11 +8,12 @@ Default:
 ```js
 {
   viewportWidth: 750,
-  remRatio: 10, // document.documentElement.style.fontSize = document.documentElement.clientWidth / remRatio + 'px';
+  remRatio: 10,
   unitPrecision: 5,
   selectorBlackList: [],
   minPixelValue: 1,
   toRem: true,
+  handleDpx: true, // handle dpx unit, close it can improve efficiency.
   mediaQuery: false
 }
 ```
@@ -36,18 +37,58 @@ document.documentElement.style.fontSize = document.documentElement.clientWidth /
 
 ### About unit `dpx`
 
-It support `dpx` to resolve a pixel border problems. You need like this in your html file `body` tag.
+It support `dpx` to resolve a pixel border problems. You need add some codes into your html file like this.
 
 ```js
 if (window.devicePixelRatio && window.devicePixelRatio >= 2) {
-  var el = document.createElement('div')
-  el.style.border = '.5px solid transparent'
-  document.body.appendChild(el)
-  if (el.offsetHeight === 1) {
-    document.documentElement.classList.add('hairlines')
+  var fakeBody = document.createElement('body')
+  var testElement = document.createElement('div')
+  testElement.style.border = '.5px solid transparent'
+  fakeBody.appendChild(testElement)
+  docEl.appendChild(fakeBody)
+  if (testElement.offsetHeight === 1) {
+    docEl.classList.add('hairlines')
   }
-  document.body.removeChild(el)
+  docEl.removeChild(fakeBody)
 }
+```
+
+If you set options `toRem` and `handleDpx` to `true`. It suggests that you add the below codes into your html file.
+
+```js
+(function flexible (window, document) {
+  var docEl = document.documentElement
+  var dpr = window.devicePixelRatio || 1
+
+  // set 1rem = viewWidth / 10
+  function setRemUnit () {
+    var rem = docEl.clientWidth / 10
+    docEl.style.fontSize = rem + 'px'
+  }
+
+  setRemUnit()
+
+  // reset rem unit on page resize
+  window.addEventListener('resize', setRemUnit)
+  window.addEventListener('pageshow', function (e) {
+    if (e.persisted) {
+      setRemUnit()
+    }
+  })
+
+  // detect 0.5px supports
+  if (dpr >= 2) {
+    var fakeBody = document.createElement('body')
+    var testElement = document.createElement('div')
+    testElement.style.border = '.5px solid transparent'
+    fakeBody.appendChild(testElement)
+    docEl.appendChild(fakeBody)
+    if (testElement.offsetHeight === 1) {
+      docEl.classList.add('hairlines')
+    }
+    docEl.removeChild(fakeBody)
+  }
+}(window, document))
 ```
 
 ### Example

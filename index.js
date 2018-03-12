@@ -12,11 +12,12 @@ const dpxRegExp = /(\d*\.?\d+)dpx/ig
 
 const defaults = {
   viewportWidth: 750,
-  remRatio: 10, // document.documentElement.style.fontSize = document.documentElement.clientWidth / 10 + 'px';
+  remRatio: 10,
   unitPrecision: 5,
   selectorBlackList: [],
   minPixelValue: 1,
   toRem: true,
+  handleDpx: true, // handle dpx unit, close it can improve efficiency.
   mediaQuery: false
 }
 
@@ -42,20 +43,22 @@ module.exports = postcss.plugin('postcss-plugin-px2viewport', options => {
       }
     })
 
-    css.walkRules(rule => {
-      const newRule = postcss.rule()
-      newRule.selector = '.hairlines ' + rule.selector
-      rule.each(decl => {
-        if (dpxRegExp.test(decl.value)) {
-          newRule.nodes.push(decl.clone({value: decl.value.replace(dpxRegExp, dpxReplace)}))
-          decl.value = decl.value.replace('d', '')
+    if (opts.handleDpx) {
+      css.walkRules(rule => {
+        const newRule = postcss.rule()
+        newRule.selector = '.hairlines ' + rule.selector
+        rule.each(decl => {
+          if (dpxRegExp.test(decl.value)) {
+            newRule.nodes.push(decl.clone({value: decl.value.replace(dpxRegExp, dpxReplace)}))
+            decl.value = decl.value.replace('d', '')
+          }
+        })
+
+        if (newRule.nodes.length) {
+          rule.parent.insertAfter(rule, newRule)
         }
       })
-
-      if (newRule.nodes.length) {
-        rule.parent.insertAfter(rule, newRule)
-      }
-    })
+    }
 
     if (opts.mediaQuery) {
       css.walkAtRules('media', rule => {
