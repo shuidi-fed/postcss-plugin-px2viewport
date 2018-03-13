@@ -31,15 +31,21 @@ module.exports = postcss.plugin('postcss-plugin-px2viewport', options => {
     css.walkDecls((decl, i) => {
       if (decl.value.indexOf('px') === -1) return
 
-      if (blacklistedSelector(opts.selectorBlackList, decl.parent.selector)) return
-
       const declValue = decl.value
 
-      decl.value = declValue.replace(pxRegex, px2vwReplace)
+      const isInBlackList = blacklistedSelector(opts.selectorBlackList, decl.parent.selector)
+      if (!isInBlackList) {
+        decl.value = declValue.replace(pxRegex, px2vwReplace)
+      }
+
       if (opts.toRem) {
-        const cloned = decl.clone({value: declValue.replace(pxRegex, px2remReplace)})
-        if (cloned.value === declValue) return
-        decl.parent.insertBefore(decl, cloned)
+        if (!isInBlackList) {
+          const cloned = decl.clone({value: declValue.replace(pxRegex, px2remReplace)})
+          if (cloned.value === declValue) return
+          decl.parent.insertBefore(decl, cloned)
+        } else {
+          decl.value = declValue.replace(pxRegex, px2remReplace)
+        }
       }
     })
 

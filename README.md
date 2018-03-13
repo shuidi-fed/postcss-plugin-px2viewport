@@ -21,7 +21,7 @@ Default:
 - `remRatio` (Number) For generates the root element `font-size`.
 - `toRem` (Boolean) Whether to convert to `rem`.
 - `unitPrecision` (Number) The decimal numbers to allow the REM units to grow to.
-- `selectorBlackList` (Array) The selectors to ignore and leave as px.
+- `selectorBlackList` (Array) The selectors to ignore and leave as px or to rem(If `toRem` is `true`).
     - If value is string, it checks to see if selector contains the string.
         - `['body']` will match `.body-class`
     - If value is regexp, it checks to see if the selector matches the regexp.
