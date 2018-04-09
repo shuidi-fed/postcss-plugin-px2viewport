@@ -14,10 +14,10 @@ const defaults = {
   viewportWidth: 750,
   remRatio: 10,
   unitPrecision: 5,
-  selectorBlackList: [],
   minPixelValue: 1,
-  toRem: true,
-  handleDpx: true, // handle dpx unit, close it can improve efficiency.
+  toRem: false,
+  toViewport: true,
+  handleDpx: false, // handle dpx unit, close it can improve efficiency.
   mediaQuery: false
 }
 
@@ -28,26 +28,26 @@ module.exports = postcss.plugin('postcss-plugin-px2viewport', options => {
   const dpxReplace = createDpx(opts.unitPrecision)
 
   return css => {
-    css.walkDecls((decl, i) => {
-      if (decl.value.indexOf('px') === -1) return
+    if (opts.toRem || opts.toViewport) {
+      css.walkDecls((decl, i) => {
+        if (decl.value.indexOf('px') === -1) return
 
-      const declValue = decl.value
+        const declValue = decl.value
 
-      const isInBlackList = blacklistedSelector(opts.selectorBlackList, decl.parent.selector)
-      if (!isInBlackList) {
-        decl.value = declValue.replace(pxRegex, px2vwReplace)
-      }
-
-      if (opts.toRem) {
-        if (!isInBlackList) {
-          const cloned = decl.clone({value: declValue.replace(pxRegex, px2remReplace)})
-          if (cloned.value === declValue) return
-          decl.parent.insertBefore(decl, cloned)
-        } else {
-          decl.value = declValue.replace(pxRegex, px2remReplace)
+        if (opts.toRem ^ opts.toViewport) {
+          decl.value = declValue.replace(pxRegex, opts.toRem ? px2remReplace : px2vwReplace)
         }
-      }
-    })
+
+        if (opts.toViewport && opts.toRem) {
+          decl.value = declValue.replace(pxRegex, px2vwReplace)
+
+          const cloned = decl.clone({value: declValue.replace(pxRegex, px2remReplace)})
+          if (cloned.value !== declValue) {
+            decl.parent.insertBefore(decl, cloned)
+          }
+        }
+      })
+    }
 
     if (opts.handleDpx) {
       css.walkRules(rule => {
@@ -112,12 +112,4 @@ function toFixed (number, precision) {
   let multiplier = Math.pow(10, precision + 1)
   let wholeNumber = Math.floor(number * multiplier)
   return Math.round(wholeNumber / 10) * 10 / multiplier
-}
-
-function blacklistedSelector (blacklist, selector) {
-  if (typeof selector !== 'string') return
-  return blacklist.some(regex => {
-    if (typeof regex === 'string') return selector.indexOf(regex) !== -1
-    return selector.match(regex)
-  })
 }

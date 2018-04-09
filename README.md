@@ -5,31 +5,30 @@ A plugin for [PostCSS](https://github.com/ai/postcss)  that converts px to viewp
 ### Options
 
 Default:
+
 ```js
 {
   viewportWidth: 750,
   remRatio: 10,
   unitPrecision: 5,
-  selectorBlackList: [],
   minPixelValue: 1,
-  toRem: true,
-  handleDpx: true, // handle dpx unit, close it can improve efficiency.
+  toRem: false,
+  toViewport: true,
+  handleDpx: false,
   mediaQuery: false
 }
 ```
+
 - `viewportWidth` (Number) The width of the viewport.
 - `remRatio` (Number) For generates the root element `font-size`.
-- `toRem` (Boolean) Whether to convert to `rem`.
 - `unitPrecision` (Number) The decimal numbers to allow the REM units to grow to.
-- `selectorBlackList` (Array) The selectors to ignore and leave as px or to rem(If `toRem` is `true`).
-    - If value is string, it checks to see if selector contains the string.
-        - `['body']` will match `.body-class`
-    - If value is regexp, it checks to see if the selector matches the regexp.
-        - `[/^body$/]` will match `body` but not `.body`
 - `minPixelValue` (Number) Set the minimum pixel value to replace.
+- `toRem` (Boolean) Whether to convert to `rem`.
+- `toViewport` (Boolean) Whether to convert to `vw`.
+- `handleDpx` (Boolean) Whether to handle dpx unit, close it can improve efficiency..
 - `mediaQuery` (Boolean) Allow px to be converted in media queries.
 
-If you set the `toRem` is true. You'll append some code into your html file.
+If you set the `toRem` is true. You'll append some codes into your entry file.
 
 ```js
 document.documentElement.style.fontSize = document.documentElement.clientWidth / 10 + 'px'
@@ -37,7 +36,7 @@ document.documentElement.style.fontSize = document.documentElement.clientWidth /
 
 ### About unit `dpx`
 
-It support `dpx` to resolve a pixel border problems. You need add some codes into your html file like this.
+It support `dpx` to resolve a pixel border problems. You need add some codes into your entry file like this.
 
 ```js
 if (window.devicePixelRatio && window.devicePixelRatio >= 2) {
@@ -53,7 +52,7 @@ if (window.devicePixelRatio && window.devicePixelRatio >= 2) {
 }
 ```
 
-If you set options `toRem` and `handleDpx` to `true`. It suggests that you add the below codes into your html file.
+If you set options `toRem` and `handleDpx` to `true`. It suggests that you add the below codes into your entry file.
 
 ```js
 (function flexible (window, document) {

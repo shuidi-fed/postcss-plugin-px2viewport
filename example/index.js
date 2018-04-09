@@ -4,7 +4,9 @@ const postcss = require('postcss')
 const pxToViewport = require('..')
 const css = fs.readFileSync(path.resolve(__dirname, 'main.css'), 'utf8')
 const options = {
-  toRem: true
+  toRem: true,
+  toViewport: true,
+  handleDpx: true
 }
 
 const processedCss = postcss(pxToViewport(options)).process(css).css
