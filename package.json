@@ -1,6 +1,6 @@
 {
   "name": "postcss-plugin-px2viewport",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "A CSS post-processor that converts px to viewport units or/and rem.",
   "main": "index.js",
   "scripts": {
