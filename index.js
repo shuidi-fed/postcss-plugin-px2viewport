@@ -34,6 +34,11 @@ module.exports = postcss.plugin('postcss-plugin-px2viewport', options => {
 
         const declValue = decl.value
 
+        if (decl.value.indexOf('rpx') > -1) {
+          decl.value = declValue.replace('rpx', 'px')
+          return
+        }
+
         if (opts.toRem ^ opts.toViewport) {
           decl.value = declValue.replace(pxRegex, opts.toRem ? px2remReplace : px2vwReplace)
         }

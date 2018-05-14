@@ -52,6 +52,12 @@ if (window.devicePixelRatio && window.devicePixelRatio >= 2) {
 }
 ```
 
+### About unit `rpx`
+
+`rpx` will just convert to `px`.
+
+### `handleDpx`
+
 If you set options `toRem` and `handleDpx` to `true`. It suggests that you add the below codes into your entry file.
 
 ```js
@@ -112,7 +118,7 @@ If you set options `toRem` and `handleDpx` to `true`. It suggests that you add t
   .class3 {
     border: 1dpx solid 10px;
     font-size: 16px;
-    line-height: 22px;
+    line-height: 22rpx;
   }
 }
 .class4 {
@@ -150,8 +156,7 @@ If you set options `toRem` and `handleDpx` to `true`. It suggests that you add t
     border: 1px solid 1.33333vw;
     font-size: 0.21333rem;
     font-size: 2.13333vw;
-    line-height: 0.29333rem;
-    line-height: 2.93333vw;
+    line-height: 22px;
   }
   .hairlines .class3 {
     border: 0.5px solid 0.13333rem;
