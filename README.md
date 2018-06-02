@@ -15,7 +15,8 @@ Default:
   toRem: false,
   toViewport: true,
   handleDpx: false,
-  mediaQuery: false
+  mediaQuery: false,
+  exclude: ''
 }
 ```
 
@@ -27,6 +28,7 @@ Default:
 - `toViewport` (Boolean) Whether to convert to `vw`.
 - `handleDpx` (Boolean) Whether to handle dpx unit, close it can improve efficiency..
 - `mediaQuery` (Boolean) Allow px to be converted in media queries.
+- `exclude` (String | Regex) file path that excluded.
 
 If you set the `toRem` is true. You'll append some codes into your entry file.
 

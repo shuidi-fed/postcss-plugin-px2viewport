@@ -18,7 +18,8 @@ const defaults = {
   toRem: false,
   toViewport: true,
   handleDpx: false, // handle dpx unit, close it can improve efficiency.
-  mediaQuery: false
+  mediaQuery: false,
+  exclude: '' // exclude file path
 }
 
 module.exports = postcss.plugin('postcss-plugin-px2viewport', options => {
@@ -27,9 +28,12 @@ module.exports = postcss.plugin('postcss-plugin-px2viewport', options => {
   const px2remReplace = createPx2Rem(opts.viewportWidth, opts.remRatio, opts.minPixelValue, opts.unitPrecision)
   const dpxReplace = createDpx(opts.unitPrecision)
 
-  return css => {
+  return (root, result) => {
+    const filePath = root.source.input.file
+    if (filePath && opts.exclude && filePath.match(opts.exclude)) return
+
     if (opts.toRem || opts.toViewport) {
-      css.walkDecls((decl, i) => {
+      root.walkDecls((decl, i) => {
         if (decl.value.indexOf('px') === -1) return
 
         const declValue = decl.value
@@ -55,7 +59,7 @@ module.exports = postcss.plugin('postcss-plugin-px2viewport', options => {
     }
 
     if (opts.handleDpx) {
-      css.walkRules(rule => {
+      root.walkRules(rule => {
         const newRule = postcss.rule()
         newRule.selector = '.hairlines ' + rule.selector
         rule.each(decl => {
@@ -72,7 +76,7 @@ module.exports = postcss.plugin('postcss-plugin-px2viewport', options => {
     }
 
     if (opts.mediaQuery) {
-      css.walkAtRules('media', rule => {
+      root.walkAtRules('media', rule => {
         if (rule.params.indexOf('px') === -1) return
         rule.params = rule.params.replace(pxRegex, px2vwReplace)
       })
