@@ -27,10 +27,20 @@ module.exports = postcss.plugin('postcss-plugin-px2viewport', options => {
   const px2vwReplace = createPx2Viewport(opts.viewportWidth, opts.minPixelValue, opts.unitPrecision)
   const px2remReplace = createPx2Rem(opts.viewportWidth, opts.remRatio, opts.minPixelValue, opts.unitPrecision)
   const dpxReplace = createDpx(opts.unitPrecision)
+  const isList = Array.isArray(opts.exclude)
 
   return (root, result) => {
     const filePath = root.source.input.file
-    if (filePath && opts.exclude && filePath.match(opts.exclude)) return
+
+    if (isList) {
+      const pathIsMatched = opts.exclude.some(v => filePath.match(v))
+
+      if (filePath && pathIsMatched) {
+        return
+      }
+    } else {
+      if (filePath && opts.exclude && filePath.match(opts.exclude)) return
+    }
 
     if (opts.toRem || opts.toViewport) {
       root.walkDecls((decl, i) => {
